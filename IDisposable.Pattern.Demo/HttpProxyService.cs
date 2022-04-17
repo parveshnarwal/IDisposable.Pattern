@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IDisp.Pattern.Demo;
+﻿namespace IDisp.Pattern.Demo;
 
 public class HttpProxyService : IDisposable
 {
@@ -29,23 +22,36 @@ public class HttpProxyService : IDisposable
         var response = httpClient.PostAsync("", new StringContent(request));
     }
 
+
+    // ~HttpProxyService will be called by Garbage collector
+    // after the run is completed
+    // hence we are passing false so that we don't repeat cleaning process for managed resource
     ~HttpProxyService()
     {
         Dispose(false);
     }
 
+
+    //This will be called when we create objects of this class with "using" keyword
+    //Or we can call it explicitly like any other normal method
     public void Dispose()
     {
         Dispose(true);
+
+        // Telling Garbage collector to NOT call finalizer because cleaning of managed and unmanaged code is already done
         GC.SuppressFinalize(this);
     }
+
 
     protected virtual void Dispose(bool disposing)
     {
         if (disposed)
         {
+            //return without doing anything because cleaning is done already
             return;
         }
+
+        //Start cleaning process here
 
         if (disposing)
         {
