@@ -19,6 +19,16 @@ public class HttpProxyService : IDisposable
         httpClient = httpClientFactory.CreateClient();
     }
 
+    public void Get()
+    {
+        var response = httpClient.GetAsync("");
+    }
+
+    public void Post(string request)
+    {
+        var response = httpClient.PostAsync("", new StringContent(request));
+    }
+
     ~HttpProxyService()
     {
         Dispose(false);
@@ -42,21 +52,11 @@ public class HttpProxyService : IDisposable
             // Dispose managed objects
             httpClient.Dispose();
         }
-        
+
         // Dispose unmanaged objects
 
 
         //Set disposed to true
         disposed = true;
-    }
-
-    public void Get()
-    {
-        var response = httpClient.GetAsync("");
-    }
-
-    public void Post(string request)
-    {
-        var response = httpClient.PostAsync("", new StringContent(request));
     }
 }
